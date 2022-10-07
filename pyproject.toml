@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "jump2django"
+version = "0.1.0"
+description = ""
+authors = ["25th-Night <brown_eyed87@naver.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "3.2.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
