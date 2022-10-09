@@ -21,5 +21,5 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path("pybo/", index),
-    path("pybo", include(pybo.urls)),
+    path("pybo/", include("pybo.urls")),
 ]
