@@ -4,15 +4,25 @@ from django.utils import timezone
 from django.http import HttpResponseNotAllowed
 from .models import Question, Answer
 from .forms import QuestionForm, AnswerForm
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 
 
 def index(request):
-    # return HttpResponse("안녕하세요 pybo에 오신 것을 환영합니다.")
-    question_list = Question.objects.order_by("-create_date")
-    context = {"question_list": question_list}
+    # return redirect("/pybo")
+    return redirect("pybo:index2")    
+
+def index2(request):
+    page = request.GET.get('page', '1')  # 페이지
+    question_list = Question.objects.order_by('-create_date')
+    paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
+    print(paginator.count)
+    max_index = len(paginator.page_range)
+    page_obj = paginator.get_page(page)
+    page_display_range = 3
+    context = {'question_list': page_obj, 'max_index': max_index, "page_display_range" : page_display_range}
     return render(request, "pybo/question_list.html", context)
 
 
@@ -39,12 +49,14 @@ def question_create(request):
 
 def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    # # 방법 1
+    # # 간단한 저장 방법 1
     # question.answer_set.create(content=request.POST.get("content"), create_date=timezone.now())
-    # # 방법 2
+    # # 간단한 저장 방법 2
     # # answer = Answer(question=question, content=request.POST.get("content"), create_date=timezone.now())
     # # answer.save()
     # return redirect("pybo:detail", question_id=question.id)
+    
+    # Form으로 입력받아서 유효성 확인 후 저장
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():

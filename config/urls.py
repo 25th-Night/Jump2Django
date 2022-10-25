@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from pybo.views import index
+import debug_toolbar
+
 
 # from pybo.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("pybo/", index),
+    path("", index, name="index"),
     path("pybo/", include("pybo.urls")),
+    path("__debug__/", include(debug_toolbar.urls)),
 ]
