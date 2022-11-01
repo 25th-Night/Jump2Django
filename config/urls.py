@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from pybo.views import index
+from pybo.views.base_views import index
 import debug_toolbar
 
 
@@ -23,7 +23,8 @@ import debug_toolbar
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index, name="index"),
+    path("", index, name="index"),  # '/' 에 해당되는 path
     path("pybo/", include("pybo.urls")),
+    path("common/", include("common.urls")),
     path("__debug__/", include(debug_toolbar.urls)),
 ]
